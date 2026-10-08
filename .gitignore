@@ -1,0 +1,9 @@
+node_modules/
+dist/
+.arnyx/
+.env
+test-results/
+playwright-report/
+*.log
+backend/target/
+artifacts/

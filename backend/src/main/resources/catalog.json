@@ -1,0 +1,305 @@
+[
+  {
+    "id": "frontend-design",
+    "name": "Frontend Design",
+    "kind": "Skills",
+    "category": "Design",
+    "owner": "anthropics",
+    "repo": "anthropics/skills",
+    "path": "skills/frontend-design",
+    "description": "Give your interfaces a distinct point of view. Better typography, intentional layouts, and design that feels considered.",
+    "accent": "peach",
+    "featured": true,
+    "icon": "design",
+    "tags": [
+      "UI & UX",
+      "Frontend",
+      "Creative"
+    ],
+    "url": "https://github.com/anthropics/skills/tree/main/skills/frontend-design",
+    "compatibility": "Codex skill",
+    "install": "npx skills add anthropics/skills --skill frontend-design --agent codex",
+    "guide": {
+      "benefits": [
+        "Choose a coherent visual direction before writing code.",
+        "Improve typography, spacing, motion, and responsive composition.",
+        "Keep the result grounded in your product rather than a template."
+      ],
+      "steps": [
+        "Review the skill instructions and source.",
+        "Use Add to Codex to download the skill into this project’s .agents/skills folder.",
+        "On your next Codex turn, invoke $frontend-design with a specific brief.",
+        "Review the result at desktop and mobile sizes, including reduced motion."
+      ],
+      "example": "$frontend-design Build a personal AI capability observatory. Use graphite surfaces, a capability constellation, clear source status, and thoughtful interactions.",
+      "caveat": "A skill supplies instructions; it is not a trained model or a guarantee of design quality."
+    },
+    "stars": null,
+    "updatedAt": null,
+    "observedAt": null
+  },
+  {
+    "id": "react-best-practices",
+    "name": "React Best Practices",
+    "kind": "Skills",
+    "category": "Development",
+    "owner": "vercel-labs",
+    "repo": "vercel-labs/agent-skills",
+    "path": "skills/react-best-practices",
+    "description": "Build faster React experiences with practical patterns for rendering, data fetching, and bundle performance.",
+    "accent": "lavender",
+    "featured": true,
+    "icon": "code",
+    "tags": [
+      "React",
+      "Performance",
+      "Frontend"
+    ],
+    "url": "https://github.com/vercel-labs/agent-skills/tree/main/skills/react-best-practices",
+    "compatibility": "Codex skill",
+    "install": "npx skills add vercel-labs/agent-skills --skill vercel-react-best-practices --agent codex",
+    "guide": {
+      "benefits": [
+        "Find unnecessary rendering and expensive client work.",
+        "Review loading waterfalls and bundle size.",
+        "Turn performance advice into specific, reviewable changes."
+      ],
+      "steps": [
+        "Read the source and choose a target component.",
+        "Add the skill to this project.",
+        "Ask Codex to inspect before editing.",
+        "Measure before and after with your profiler or build output."
+      ],
+      "example": "$vercel-react-best-practices Review my dashboard for rendering bottlenecks and request waterfalls. Explain the findings, then make the smallest useful fixes.",
+      "caveat": "Advice depends on your framework and version. Verify improvements with measurements."
+    },
+    "stars": null,
+    "updatedAt": null,
+    "observedAt": null
+  },
+  {
+    "id": "context7",
+    "name": "Context7",
+    "kind": "Connectors",
+    "category": "Development",
+    "owner": "upstash",
+    "repo": "upstash/context7",
+    "description": "Bring current library documentation and version-specific examples into your coding conversations.",
+    "accent": "mint",
+    "featured": true,
+    "icon": "docs",
+    "tags": [
+      "Documentation",
+      "MCP",
+      "Context"
+    ],
+    "url": "https://github.com/upstash/context7",
+    "compatibility": "Codex MCP server",
+    "install": "codex mcp add context7 --url https://mcp.context7.com/mcp",
+    "guide": {
+      "benefits": [
+        "Retrieve documentation close to the library version you use.",
+        "Give your agent examples grounded in a documented API.",
+        "Reduce guesses about unfamiliar or changing dependencies."
+      ],
+      "steps": [
+        "Read the provider setup guide and authentication requirements.",
+        "Copy the MCP command into your terminal.",
+        "Check codex mcp list and complete any provider authentication.",
+        "Ask Codex to use Context7 for a specific library and version."
+      ],
+      "example": "Use Context7 to check the current Motion for React documentation, then implement an accessible expandable panel in my app.",
+      "caveat": "This connection may require provider credentials and has its own limits. Arnyx does not claim it is connected merely because it is cataloged."
+    },
+    "stars": null,
+    "updatedAt": null,
+    "observedAt": null
+  },
+  {
+    "id": "playwright-mcp",
+    "name": "Playwright MCP",
+    "kind": "Connectors",
+    "category": "Testing",
+    "owner": "microsoft",
+    "repo": "microsoft/playwright-mcp",
+    "description": "Let your agent explore a real browser, follow user journeys, and inspect what actually appears on screen.",
+    "accent": "blue",
+    "featured": true,
+    "icon": "browser",
+    "tags": [
+      "Browser",
+      "Testing",
+      "MCP"
+    ],
+    "url": "https://github.com/microsoft/playwright-mcp",
+    "compatibility": "Codex MCP server",
+    "install": "codex mcp add playwright -- npx @playwright/mcp@latest",
+    "guide": {
+      "benefits": [
+        "Exercise complete user journeys in a browser.",
+        "Inspect accessible page structure.",
+        "Reproduce UI bugs against the running app."
+      ],
+      "steps": [
+        "Review the Microsoft repository and browser requirements.",
+        "Register the server with the copied command.",
+        "Run your app and check codex mcp list.",
+        "Ask Codex to exercise a clearly described journey."
+      ],
+      "example": "Use Playwright to open http://localhost:5173, filter skills by Design, open a walkthrough, and check the page at a mobile viewport.",
+      "caveat": "The browser can access sites and local pages. Keep sign-in and sensitive workflows under your control."
+    },
+    "stars": null,
+    "updatedAt": null,
+    "observedAt": null
+  },
+  {
+    "id": "web-design-guidelines",
+    "name": "Web Design Guidelines",
+    "kind": "Skills",
+    "category": "Design",
+    "owner": "vercel-labs",
+    "repo": "vercel-labs/agent-skills",
+    "path": "skills/web-design-guidelines",
+    "description": "A practical second pair of eyes for accessibility, interaction patterns, and the details that make a site easier to use.",
+    "accent": "sand",
+    "icon": "layers",
+    "tags": [
+      "Accessibility",
+      "Review",
+      "UI & UX"
+    ],
+    "url": "https://github.com/vercel-labs/agent-skills/tree/main/skills/web-design-guidelines",
+    "compatibility": "Codex skill",
+    "install": "npx skills add vercel-labs/agent-skills --skill web-design-guidelines --agent codex",
+    "guide": {
+      "benefits": [
+        "Review keyboard, focus, and semantic controls.",
+        "Find common interaction and accessibility gaps.",
+        "Prioritize concrete fixes rather than visual opinions."
+      ],
+      "steps": [
+        "Add the skill to your project.",
+        "Choose the pages or components you want reviewed.",
+        "Invoke $web-design-guidelines with that scope.",
+        "Verify findings in the browser and apply relevant fixes."
+      ],
+      "example": "$web-design-guidelines Review the discovery page for keyboard navigation, accessible dialogs, readable contrast, and reduced-motion behavior.",
+      "caveat": "An automated review is a starting point. Check with assistive technology where it matters."
+    },
+    "stars": null,
+    "updatedAt": null,
+    "observedAt": null
+  },
+  {
+    "id": "github-mcp",
+    "name": "GitHub MCP Server",
+    "kind": "Connectors",
+    "category": "Development",
+    "owner": "github",
+    "repo": "github/github-mcp-server",
+    "description": "Give your agent repository context: issues, pull requests, source files, and development workflows.",
+    "accent": "lavender",
+    "icon": "git",
+    "tags": [
+      "GitHub",
+      "MCP",
+      "Repositories"
+    ],
+    "url": "https://github.com/github/github-mcp-server",
+    "compatibility": "Codex MCP server",
+    "install": "codex mcp add github --url https://api.githubcopilot.com/mcp/",
+    "guide": {
+      "benefits": [
+        "Bring repository and issue context into a task.",
+        "Review pull requests with their surrounding history.",
+        "Reduce switching between your editor and GitHub."
+      ],
+      "steps": [
+        "Review the official server documentation and access requirements.",
+        "Configure the authentication method documented by GitHub.",
+        "Register the MCP server and verify codex mcp list.",
+        "Start with a read-only repository question."
+      ],
+      "example": "Using GitHub, summarize the open issues in my repository and identify the ones related to frontend performance. Do not change any issues.",
+      "caveat": "Authentication and plan requirements depend on GitHub. The endpoint command alone does not grant access."
+    },
+    "stars": null,
+    "updatedAt": null,
+    "observedAt": null
+  },
+  {
+    "id": "codex-cli",
+    "name": "Codex CLI",
+    "kind": "Harnesses",
+    "category": "Agent workflows",
+    "owner": "openai",
+    "repo": "openai/codex",
+    "description": "Your local coding agent, and the engine behind Arnyx’s coordinator. Reuse your existing CLI configuration and sign-in.",
+    "accent": "peach",
+    "icon": "terminal",
+    "tags": [
+      "Local-first",
+      "Agent",
+      "CLI"
+    ],
+    "url": "https://github.com/openai/codex",
+    "compatibility": "Native Codex harness",
+    "install": "npm install -g @openai/codex",
+    "guide": {
+      "benefits": [
+        "Work with local files and your existing tools.",
+        "Run repeatable tasks with structured JSON events.",
+        "Use one coordinator for the catalog, crawler activity, and your saved stack."
+      ],
+      "steps": [
+        "Install the official Codex CLI if it is not already available.",
+        "Run codex login in your terminal.",
+        "Open Arnyx settings and verify the CLI connection.",
+        "Ask the coordinator about your stack or a discovery result."
+      ],
+      "example": "Compare the design skills in my Arnyx catalog. Recommend a small stack for building and testing a React dashboard, and explain the tradeoffs.",
+      "caveat": "Arnyx invokes codex exec in a read-only sandbox. CLI account limits and your selected provider still apply."
+    },
+    "stars": null,
+    "updatedAt": null,
+    "observedAt": null
+  },
+  {
+    "id": "knowledge-work-plugins",
+    "name": "Knowledge Work Plugins",
+    "kind": "Plugins",
+    "category": "Productivity",
+    "owner": "anthropics",
+    "repo": "anthropics/knowledge-work-plugins",
+    "description": "Explore reusable knowledge-work workflows for research, product work, and organization.",
+    "accent": "rose",
+    "icon": "puzzle",
+    "tags": [
+      "Research",
+      "Workflows",
+      "Reference"
+    ],
+    "url": "https://github.com/anthropics/knowledge-work-plugins",
+    "compatibility": "Provider-specific · manual adaptation",
+    "install": null,
+    "guide": {
+      "benefits": [
+        "Discover focused workflows and reusable prompt patterns.",
+        "Learn how plugins combine instructions and tools.",
+        "Identify parts that can be adapted into Codex skills."
+      ],
+      "steps": [
+        "Read the source repository and supported host information.",
+        "Choose one workflow and inspect its required tools.",
+        "Adapt compatible instructions into a Codex skill if licensing allows.",
+        "Configure corresponding MCP tools separately and test the workflow."
+      ],
+      "example": "Review this plugin workflow and explain which instructions could become a Codex skill, which tools need MCP equivalents, and which parts are unsupported.",
+      "caveat": "These plugins target another host. Arnyx does not automatically install them into Codex or claim host compatibility."
+    },
+    "stars": null,
+    "updatedAt": null,
+    "observedAt": null
+  }
+]
