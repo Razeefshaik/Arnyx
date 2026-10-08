@@ -82,6 +82,7 @@ svg { flex-shrink: 0; vertical-align: middle; }
 .icon-button { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; padding: 4px; background: none; color: var(--muted); border-radius: 5px; }
 .icon-button:hover { background: var(--raised); color: var(--text); }
 .topbar-activity { position: relative; }
+.mobile-menu { display: none; }
 .topbar-activity i { width: 4px; height: 4px; background: var(--accent); border-radius: 50%; position: absolute; top: 4px; right: 6px; }
 .page-layout { display: grid; grid-template-columns: minmax(0,1fr) 282px; gap: 27px; padding: 32px 34px 0; max-width: 1750px; margin: auto; }
 .main-content { min-width: 0; }
@@ -422,7 +423,7 @@ select option { background: var(--surface); color: var(--text); }
 .comparison-content td { color: var(--muted); }
 .comparison-content ul { padding-left: 15px; margin: 0; }
 .comparison-content li { margin-bottom: 10px; }
-.compare-bar { display: flex; align-items: center; gap: 15px; padding: 13px 15px; background: var(--raised); border: 1px solid color-mix(in srgb,var(--line) 80%,var(--muted)); border-radius: 10px; position: fixed; bottom: 24px; left: calc(50% + 65px); transform: translateX(-50%); z-index: 6; box-shadow: var(--shadow); max-width: calc(100vw - 40px); font-size: 11px; white-space: nowrap; }
+.compare-bar { display: flex; align-items: center; gap: 15px; padding: 13px 15px; background: var(--raised); border: 1px solid color-mix(in srgb,var(--line) 80%,var(--muted)); border-radius: 10px; position: fixed; bottom: 24px; left: calc(50% + 65px); translate: -50% 0; z-index: 6; box-shadow: var(--shadow); max-width: calc(100vw - 40px); font-size: 11px; white-space: nowrap; }
 .compare-bar > svg { color: var(--accent); }
 .compare-bar > div { display: flex; gap: 5px; }
 .compare-bar > div > button { display: flex; gap: 7px; align-items: center; padding: 4px 7px; background: var(--surface); color: var(--muted); border-radius: 4px; font-size: 9px; }
@@ -527,6 +528,7 @@ select option { background: var(--surface); color: var(--text); }
   .roomy .chat-suggestions { flex-direction: column; }
 }
 @media(max-width: 590px) {
+  .mobile-menu { display: inline-flex; }
   .app { display: block; }
   .sidebar { width: 100%; height: auto; padding: 14px 17px; flex-direction: row; justify-content: space-between; border-right: 0; border-bottom: 1px solid var(--line); z-index: 5; gap: 18px; }
   .brand { margin: 0; gap: 6px; }

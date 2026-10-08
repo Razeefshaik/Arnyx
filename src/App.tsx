@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'motion/react'
 import {
   ArrowRight, ArrowUpRight, Bell, BookOpen, Check, CheckCheck, ChevronDown, ChevronRight,
   CircleHelp, Command, Compass, Download, ExternalLink, FolderOpen, GitBranch, History,
-  Layers3, Loader2, Moon, Orbit, Plus, Radio, RefreshCw, Search, Settings2, ShieldCheck,
+  Layers3, Loader2, Menu, Moon, Orbit, Plus, Radio, RefreshCw, Search, Settings2, ShieldCheck,
   SlidersHorizontal, Sparkles, Star, Sun, Terminal, Trash2, X,
 } from 'lucide-react'
 import { api, relativeTime, shortNumber } from './api'
@@ -202,6 +202,7 @@ export function App() {
     <div className="workspace">
       <header className="topbar"><div className="breadcrumb">Workspace<ChevronRight size={13} /><span>{view}</span></div>
         <label className="global-search"><Search size={16} /><input ref={searchRef} value={query} onChange={event => { setQuery(event.target.value); if (!['Discover', 'My stack', 'Walkthroughs'].includes(view)) setView('Discover') }} placeholder="Search your next capability…" aria-label="Search capabilities" /><button onClick={() => setCommandOpen(true)} aria-label="Open command menu"><Command size={11} />K</button></label>
+        <button className="icon-button mobile-menu" aria-label="Open workspace menu" onClick={() => setCommandOpen(true)}><Menu size={18} /></button>
         <button className="topbar-activity icon-button" aria-label="View recent activity" onClick={() => setView('Activity')}><Bell size={18} />{!!state?.events.length && <i />}</button>
       </header>
       <div className="page-layout">
@@ -253,7 +254,7 @@ export function App() {
           {state && view === 'Settings' && <div className="settings-view">
             <section className="settings-section"><div className="section-title"><h2>Your intelligence engine</h2><button className="subtle-button" onClick={() => void refreshRuntime(true)}><RefreshCw size={13} />Recheck</button></div><div className="engine-status"><span className="engine-icon"><Terminal size={28} /></span><div><h3>Codex CLI</h3><p>{runtime?.version || 'Checking CLI version'}</p></div><span className={'status-pill' + (ready ? ' ready' : '')}><StatusDot ready={ready} />{ready ? 'Ready' : 'Needs setup'}</span></div><p>{runtime?.message}</p><div className="settings-facts"><div><small>LLM provider</small><strong>Your configured Codex CLI</strong></div><div><small>Coordinator permissions</small><strong>Read-only sandbox</strong></div><div><small>Data storage</small><strong>Local H2 database</strong></div><div><small>Backend</small><strong>Spring Boot 4.1.1 · Java 21+</strong></div></div><CodeBlock text="codex login" label="CLI sign-in" onCopy={text => void copy(text)} /></section>
             <section className="settings-section"><h2>Connected MCP tools</h2><p>Detected from your CLI configuration. Enabled does not mean a live connection was tested.</p>{runtime?.connections.map(connection => <div className="connection-row" key={connection.name}><PlugIcon /><strong>{connection.name}</strong><span>{connection.enabled ? 'Enabled' : 'Disabled'} · {connection.authStatus}</span></div>)}{!runtime?.connections.length && <p className="muted">{runtime?.connectionsUnavailable ? 'Could not inspect MCP configuration. Check codex mcp list in your terminal.' : 'No MCP servers configured in this CLI.'}</p>}</section>
-            <section className="settings-section"><h2>Appearance</h2><div className="appearance-options">{['dark', 'light'].map(value => <button key={value} className={theme === value ? 'selected' : ''} onClick={() => setTheme(value)}>{value === 'dark' ? <Moon size={18} /> : <Sun size={18} />}<span>{value === 'dark' ? 'Observatory dark' : 'Daylight'}</span>{theme === value && <Check size={15} />}</button>)}</div></section>
+            <section className="settings-section"><h2>Appearance</h2><div className="appearance-options">{['dark', 'light'].map(value => <button key={value} className={theme === value ? 'selected' : ''} aria-pressed={theme === value} onClick={() => setTheme(value)}>{value === 'dark' ? <Moon size={18} /> : <Sun size={18} />}<span>{value === 'dark' ? 'Observatory dark' : 'Daylight'}</span>{theme === value && <Check size={15} />}</button>)}</div></section>
             <section className="settings-section"><h2>Built around your control</h2><p>Arnyx runs on your computer. Public source requests go directly to GitHub and the MCP Registry. Coordinator questions use your Codex CLI account and provider.</p><p>Connector authentication happens with the provider. Provider-specific plugins are marked for manual adaptation. No third-party tool is silently installed.</p><a className="text-link" href="https://learn.chatgpt.com/docs/non-interactive-mode" target="_blank" rel="noreferrer">Read the Codex integration documentation<ExternalLink size={13} /></a></section>
           </div>}
           <footer className="page-footer"><span><Mark small />A little more capable, every day.</span><span>Arnyx · Personal AI workspace</span></footer>

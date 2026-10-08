@@ -153,7 +153,8 @@ node scripts/visual-check.mjs
 
 Backend tests cover path traversal and Windows device names, source host
 restrictions, concurrent catalog updates, missing-source score behavior, and
-walkthrough metadata. Browser tests cover filters, walkthroughs, keyboard
+walkthrough metadata, plus pinned installation, binary preservation, existing
+skill preservation, and invalid review tokens. Browser tests cover filters, walkthroughs, keyboard
 dialogs, persistent saved stacks, comparison, mobile overflow, and reduced
 motion.
 

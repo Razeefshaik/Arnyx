@@ -146,7 +146,7 @@
         "Run your app and check codex mcp list.",
         "Ask Codex to exercise a clearly described journey."
       ],
-      "example": "Use Playwright to open http://localhost:5173, filter skills by Design, open a walkthrough, and check the page at a mobile viewport.",
+      "example": "Use Playwright to open http://localhost:5175, filter skills by Design, open a walkthrough, and check the page at a mobile viewport.",
       "caveat": "The browser can access sites and local pages. Keep sign-in and sensitive workflows under your control."
     },
     "stars": null,

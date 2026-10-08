@@ -116,7 +116,7 @@ export function CapabilityCard({ item, saved, installed, onOpen, onSave, compare
       <p>{item.description}</p>
       <div className="card-tags">{item.tags.slice(0, 2).map(tag => <span key={tag}>{tag}</span>)}</div>
       <div className="card-bottom">
-        <span title={item.stars != null ? 'GitHub repository stars, not skill installs' : 'Source metadata has not been checked'}>{item.stars != null ? <><Star size={12} />{shortNumber(item.stars)}</> : <><Compass size={12} />Curated</>}</span>
+        <span title={item.stars != null ? 'GitHub repository stars, not skill installs' : item.observedAt ? 'Source metadata checked; repository stars are not reported' : 'Curated starter entry, awaiting a source check'}>{item.stars != null ? <><Star size={12} />{shortNumber(item.stars)}</> : item.observedAt ? <><CheckCheck size={12} />Source checked</> : <><Compass size={12} />Curated</>}</span>
         <button className={'compare-toggle' + (compared ? ' active' : '')} aria-pressed={compared} onClick={onCompare}>{compared ? <Check size={12} /> : <Layers3 size={12} />}{compared ? 'Selected' : 'Compare'}</button>
         <button className="explore-button" onClick={onOpen} aria-label={'Explore ' + item.name}><ArrowRight size={17} /></button>
       </div>

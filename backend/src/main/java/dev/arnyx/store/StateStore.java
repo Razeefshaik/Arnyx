@@ -20,9 +20,18 @@ public class StateStore {
     public StateStore(JdbcTemplate jdbc) throws IOException {
         this.jdbc = jdbc;
         jdbc.execute("CREATE TABLE IF NOT EXISTS app_state (state_key VARCHAR(80) PRIMARY KEY, payload CLOB NOT NULL)");
-        if (!exists("catalog")) {
-            String seed = new ClassPathResource("catalog.json").getContentAsString(StandardCharsets.UTF_8);
-            put("catalog", json.readValue(seed, VALUE));
+        String seed = new ClassPathResource("catalog.json").getContentAsString(StandardCharsets.UTF_8);
+        List<Map<String, Object>> authored = json.readValue(seed, new TypeReference<>() {});
+        if (!exists("catalog")) put("catalog", authored);
+        else {
+            var entries = new LinkedHashMap<String, Map<String, Object>>();
+            list("catalog").forEach(item -> entries.put(item.get("id").toString(), item));
+            Set<String> observedFields = Set.of("stars", "observedAt", "updatedAt", "version", "sourceId", "branch", "skillName", "registryName");
+            for (var item : authored) {
+                var current = entries.computeIfAbsent(item.get("id").toString(), key -> new LinkedHashMap<>());
+                item.forEach((key, value) -> { if (!observedFields.contains(key) || !current.containsKey(key)) current.put(key, value); });
+            }
+            put("catalog", entries.values());
         }
         if (!exists("sources")) {
             put("sources", List.of(

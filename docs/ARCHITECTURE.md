@@ -40,6 +40,8 @@ Synchronized read/modify/write methods prevent parallel scout updates from
 overwriting one another. Snapshots are appropriate for a personal catalog of
 hundreds of items; a large shared service would require normalized tables and
 database-level job coordination.
+Authored starter guides refresh at startup while observed stars, timestamps, and
+release metadata are retained. Bookmarks and conversations are separate state.
 
 SkillInstaller obtains a commit, previews the exact subtree, and stores a
 short-lived review token. Installation accepts that token, downloads at the
@@ -53,7 +55,9 @@ and manages one CLI process at a time. It sends structured app context via stdin
 and reads the CLI's JSONL output. Jobs are bounded, cancellable, and preserve
 conversation history only after a completed response. Ephemeral CLI sessions
 avoid writing additional rollout files; Arnyx keeps its own bounded conversation
-history in H2.
+history in H2. Named capabilities and curated picks are prioritized in a bounded
+120-item context, accompanied by an index of up to 500 capability names. The
+coordinator is instructed to disclose missing details.
 
 LocalAccessFilter checks host, origin, and JSON content type. The backend binds
 to loopback; no third-party web origin is accepted for API actions.

@@ -1,5 +1,12 @@
 import { expect, test } from '@playwright/test'
 
+test.beforeAll(async ({ request }) => {
+  await expect.poll(async () => {
+    try { return (await request.get('http://127.0.0.1:4318/actuator/health')).status() }
+    catch { return 0 }
+  }, { timeout: 40_000, message: 'Spring Boot must be ready before checking the UI' }).toBe(200)
+})
+
 test('search, filters, walkthroughs, and keyboard dialogs', async ({ page }) => {
   const errors: string[] = []
   page.on('pageerror', error => errors.push(error.message))
@@ -62,4 +69,8 @@ test('mobile layout and reduced motion remain usable', async ({ page }) => {
   await page.getByRole('button', { name: 'Frontend Design', exact: true }).click()
   await expect(page.getByRole('dialog', { name: 'Capability details' })).toBeVisible()
   expect(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth)).toBe(false)
+  await page.keyboard.press('Escape')
+  await page.getByRole('button', { name: 'Open workspace menu' }).click()
+  await page.getByRole('dialog', { name: 'Go anywhere' }).getByRole('button', { name: 'Settings', exact: true }).click()
+  await expect(page.getByRole('heading', { name: 'Appearance' })).toBeVisible()
 })
