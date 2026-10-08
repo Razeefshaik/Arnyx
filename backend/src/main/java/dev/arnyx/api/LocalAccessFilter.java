@@ -24,7 +24,7 @@ public class LocalAccessFilter extends OncePerRequestFilter {
             try {
                 URI uri = URI.create(origin);
                 allowed &= HOSTS.contains(uri.getHost()) && "http".equals(uri.getScheme())
-                    && (uri.getPort() == 5173 || uri.getPort() == request.getServerPort());
+                    && (uri.getPort() == 5175 || uri.getPort() == request.getServerPort());
             } catch (Exception e) { allowed = false; }
         }
         if ("cross-site".equals(request.getHeader("Sec-Fetch-Site"))) allowed = false;

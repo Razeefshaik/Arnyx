@@ -52,13 +52,17 @@ public class SkillInstaller {
         }
         if (files.isEmpty() || !files.contains("SKILL.md")) throw new IllegalStateException("No SKILL.md found.");
         if (files.size() > 100 || total > 2_000_000) throw new IllegalStateException("Skill exceeds the reviewed download limit (100 files / 2 MB). Use manual setup.");
-        String instructions = client.text("https://raw.githubusercontent.com/" + repo + "/" + sha + "/" + skillPath + "/SKILL.md");
+        Map<String, byte[]> contents = client.repositoryFiles(repo, sha, skillPath, false);
+        for (String file : files) if (!contents.containsKey(file)) throw new IllegalStateException("Archive differs from the reviewed repository tree.");
+        long downloadedSize = contents.values().stream().mapToLong(bytes -> bytes.length).sum();
+        if (downloadedSize > 2_000_000) throw new IllegalStateException("Skill exceeds the reviewed download size limit.");
+        String instructions = new String(contents.get("SKILL.md"), StandardCharsets.UTF_8);
         String folder = CrawlerService.frontmatter(instructions, "name", Path.of(skillPath).getFileName().toString());
         if (!folder.matches("[A-Za-z0-9][A-Za-z0-9_-]{0,100}")) folder = Path.of(skillPath).getFileName().toString();
         String reviewId = UUID.randomUUID().toString();
         reviews.entrySet().removeIf(entry -> entry.getValue().expires.isBefore(Instant.now()));
         if (reviews.size() > 20) throw new IllegalStateException("Too many pending reviews. Wait a few minutes.");
-        reviews.put(reviewId, new Review(id, repo, skillPath, sha, folder, List.copyOf(files), Instant.now().plusSeconds(900)));
+        reviews.put(reviewId, new Review(id, repo, skillPath, sha, folder, List.copyOf(files), Map.copyOf(contents), Instant.now().plusSeconds(900)));
         return Map.of("reviewId", reviewId, "commit", sha, "files", files, "instructions", instructions,
             "folder", folder, "bytes", total, "destination", ".agents/skills/" + folder,
             "notice", "Review instructions and bundled scripts. Installation downloads files without running scripts. Codex can follow the skill on your next turn.");
@@ -78,7 +82,7 @@ public class SkillInstaller {
         try {
             long total = 0;
             for (String relative : review.files) {
-                byte[] content = client.bytes("https://raw.githubusercontent.com/" + review.repo + "/" + review.sha + "/" + review.path + "/" + relative);
+                byte[] content = review.contents.get(relative);
                 total += content.length;
                 if (total > 2_000_000) throw new IllegalStateException("Download exceeded the reviewed size limit.");
                 Path target = staging.resolve(relative).normalize();
@@ -121,5 +125,5 @@ public class SkillInstaller {
             && !part.matches("(?i)(CON|PRN|AUX|NUL|COM[0-9]|LPT[0-9])(?:\\..*)?")
             && !part.endsWith(".") && !part.endsWith(" ") && !part.matches(".*[<>\"|?*\\x00-\\x1f].*"));
     }
-    private record Review(String id, String repo, String path, String sha, String folder, List<String> files, Instant expires) {}
+    private record Review(String id, String repo, String path, String sha, String folder, List<String> files, Map<String, byte[]> contents, Instant expires) {}
 }

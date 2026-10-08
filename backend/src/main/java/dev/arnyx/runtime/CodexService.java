@@ -222,7 +222,8 @@ public class CodexService {
         for (String entry : (envPath == null ? "" : envPath).split(java.util.regex.Pattern.quote(File.pathSeparator))) {
             if (entry.isBlank()) continue;
             Path folder = Path.of(entry);
-            for (String name : List.of("codex.exe", "codex")) if (Files.isRegularFile(folder.resolve(name))) return executable(folder.resolve(name));
+            List<String> nativeNames = System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("win") ? List.of("codex.exe") : List.of("codex");
+            for (String name : nativeNames) if (Files.isRegularFile(folder.resolve(name))) return executable(folder.resolve(name));
             Path npmCli = folder.resolve("node_modules/@openai/codex/bin/codex.js");
             if (Files.isRegularFile(npmCli)) return executable(npmCli);
         }

@@ -68,17 +68,36 @@ public class CrawlerService {
     private Scan skills() {
         var items = new ArrayList<Map<String, Object>>();
         var warnings = new ArrayList<String>();
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(180);
         for (var target : List.of(new String[]{"anthropics/skills", "skills"}, new String[]{"vercel-labs/agent-skills", "skills"}, new String[]{"openai/skills", "skills/.curated"})) {
             String repo = target[0], root = target[1];
+            if (System.nanoTime() >= deadline) { warnings.add("Skill discovery reached its three-minute time budget."); break; }
             try {
                 JsonNode metadata = client.json("https://api.github.com/repos/" + repo);
+                if (System.nanoTime() + TimeUnit.SECONDS.toNanos(25) > deadline) throw new IllegalStateException("Skill discovery reached its time budget.");
                 JsonNode entries = client.json("https://api.github.com/repos/" + repo + "/contents/" + root);
-                int inspected = 0;
+                if (System.nanoTime() + TimeUnit.SECONDS.toNanos(25) > deadline) throw new IllegalStateException("Skill discovery reached its time budget.");
+                Map<String, byte[]> instructions = client.repositoryFiles(repo, metadata.path("default_branch").asText(), root, true);
+                var batch = new ArrayList<Map<String, Object>>();
                 for (JsonNode entry : entries) {
-                    if (!"dir".equals(entry.path("type").asText()) || inspected++ >= 30) continue;
+                    if (!"dir".equals(entry.path("type").asText()) || batch.size() >= 30) continue;
+                    String key = entry.path("path").asText().substring(root.length() + 1) + "/SKILL.md";
+                    byte[] content = instructions.get(key);
+                    if (content != null) batch.add(readSkill(repo, metadata, entry, new String(content, StandardCharsets.UTF_8)));
+                }
+                // Publish each repository's progress without waiting for other sources.
+                items.addAll(batch);
+                store.mergeCatalog(batch);
+                store.updateSource("skills", Map.of("found", items.size()));
+            } catch (Exception e) { warnings.add(repo + ": " + safeError(e)); }
+        }
+        if (items.isEmpty()) throw new IllegalStateException(warnings.isEmpty() ? "No readable skills found." : String.join(" · ", warnings).substring(0, Math.min(500, String.join(" · ", warnings).length())));
+        return new Scan(items, warnings.stream().distinct().limit(6).toList());
+    }
+
+    private Map<String, Object> readSkill(String repo, JsonNode metadata, JsonNode entry, String instructions) {
                     String path = entry.path("path").asText();
                     try {
-                        String instructions = client.text("https://raw.githubusercontent.com/" + repo + "/" + metadata.path("default_branch").asText() + "/" + path + "/SKILL.md");
                         String name = frontmatter(instructions, "name", entry.path("name").asText());
                         String description = frontmatter(instructions, "description", "A reusable capability from " + repo + ". Review its source instructions.");
                         var item = base(repo.replace("/", "--") + "--" + entry.path("name").asText(), pretty(name), "Skills", repo);
@@ -90,16 +109,10 @@ public class CrawlerService {
                         item.put("stars", metadata.path("stargazers_count").asLong());
                         item.put("updatedAt", metadata.path("pushed_at").asText());
                         item.put("sourceId", "skills");
-                        items.add(normalize(item));
+                        return normalize(item);
                     } catch (Exception e) {
-                        // Skip folders that are not skills; keep visible warnings for network failures.
-                        if (!safeError(e).contains("HTTP 404")) warnings.add(repo + "/" + entry.path("name").asText() + ": " + safeError(e));
+                        throw new IllegalStateException(safeError(e));
                     }
-                }
-            } catch (Exception e) { warnings.add(repo + ": " + safeError(e)); }
-        }
-        if (items.isEmpty()) throw new IllegalStateException(String.join(" · ", warnings));
-        return new Scan(items, warnings);
     }
 
     private Scan connectors() {

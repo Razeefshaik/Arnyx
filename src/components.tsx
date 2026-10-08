@@ -1,13 +1,14 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState, type ReactNode } from 'react'
 import { motion } from 'motion/react'
 import {
   ArrowDown, ArrowRight, ArrowUpRight, Bookmark, Check, CheckCheck, Code2, Compass, Copy,
   Expand, GitBranch, Globe2, Layers3, Loader2, Orbit, Play, Plug, Puzzle, Send, Sparkles,
   Square, Star, Terminal, X, BookOpen, PenTool,
 } from 'lucide-react'
-import Markdown from 'react-markdown'
 import { relativeTime, shortNumber } from './api'
 import type { Capability, Job, Kind, Message, Runtime, Scout } from './types'
+
+const Markdown = lazy(() => import('react-markdown'))
 
 export const kindIcons = { Skills: Layers3, Connectors: Plug, Plugins: Puzzle, Harnesses: Terminal }
 export function Mark({ small = false }: { small?: boolean }) {
@@ -161,7 +162,7 @@ export function Coordinator({ runtime, messages, job, onSend, onCancel, onExpand
         </div>
       </div>}
       {messages.map(message => <div key={message.id} className={'chat-message ' + message.role}>
-        <small>{message.role === 'user' ? 'You' : 'Arnyx'}</small><Markdown>{message.content}</Markdown>
+        <small>{message.role === 'user' ? 'You' : 'Arnyx'}</small><Suspense fallback={<p>{message.content}</p>}><Markdown>{message.content}</Markdown></Suspense>
       </div>)}
       {(running || sending) && <div className="chat-thinking"><span className="thinking-dots"><i /><i /><i /></span><span>{job?.progress || 'Starting Codex'}</span></div>}
       {job?.status === 'error' && <div className="inline-error">{job.error}</div>}
