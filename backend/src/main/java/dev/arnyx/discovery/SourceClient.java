@@ -15,7 +15,8 @@ public class SourceClient {
     private final HttpClient client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).followRedirects(HttpClient.Redirect.NEVER).build();
     private final JsonMapper json = JsonMapper.builder().build();
     public JsonNode json(String url) { return json.readTree(text(url)); }
-    public String text(String url) {
+    public String text(String url) { return new String(bytes(url), java.nio.charset.StandardCharsets.UTF_8); }
+    public byte[] bytes(String url) {
         URI uri = URI.create(url);
         if (!"https".equals(uri.getScheme()) || !HOSTS.contains(uri.getHost()) || uri.getUserInfo() != null)
             throw new IllegalArgumentException("Source host is not allowed.");
@@ -31,7 +32,7 @@ public class SourceClient {
                 }
                 byte[] bytes = input.readNBytes(3_000_001);
                 if (bytes.length > 3_000_000) throw new IllegalStateException("Source response exceeded size limit.");
-                return new String(bytes, java.nio.charset.StandardCharsets.UTF_8);
+                return bytes;
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

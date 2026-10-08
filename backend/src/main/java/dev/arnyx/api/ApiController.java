@@ -40,7 +40,7 @@ public class ApiController {
     }
     @PostMapping("/settings")
     public Map<String, Object> settings(@RequestBody @Valid SettingsRequest body) {
-        var settings = Map.of("scheduled", body.scheduled, "intervalMinutes", body.intervalMinutes);
+        Map<String, Object> settings = Map.of("scheduled", body.scheduled, "intervalMinutes", body.intervalMinutes);
         store.put("settings", settings);
         store.log("settings", body.scheduled ? "Scheduled discovery enabled every " + body.intervalMinutes + " minutes while Arnyx is running." : "Scheduled discovery paused.");
         return settings;

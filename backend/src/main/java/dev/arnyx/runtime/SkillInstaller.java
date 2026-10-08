@@ -78,7 +78,7 @@ public class SkillInstaller {
         try {
             long total = 0;
             for (String relative : review.files) {
-                byte[] content = client.text("https://raw.githubusercontent.com/" + review.repo + "/" + review.sha + "/" + review.path + "/" + relative).getBytes(StandardCharsets.UTF_8);
+                byte[] content = client.bytes("https://raw.githubusercontent.com/" + review.repo + "/" + review.sha + "/" + review.path + "/" + relative);
                 total += content.length;
                 if (total > 2_000_000) throw new IllegalStateException("Download exceeded the reviewed size limit.");
                 Path target = staging.resolve(relative).normalize();
